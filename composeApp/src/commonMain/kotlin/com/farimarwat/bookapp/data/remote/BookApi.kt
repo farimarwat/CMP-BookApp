@@ -11,7 +11,7 @@ import io.ktor.http.parameters
 
 class BookApi(private val client:HttpClient){
 
-    suspend fun getBooks(limit:Int = 10):List<Book>{
+    suspend fun getBooks(limit:Int):List<Book>{
         val result = client.get {
             url("https://openlibrary.org/subjects/fantasy.json")
             parameters {
@@ -21,7 +21,7 @@ class BookApi(private val client:HttpClient){
         return result.works.map { it.toBook() }
     }
 
-    suspend fun searchBook(query:String,limit:Int = 10):List<Book>{
+    suspend fun searchBook(query:String,limit:Int):List<Book>{
         return client.get {
             url("https://openlibrary.org/search.json")
             parameters {

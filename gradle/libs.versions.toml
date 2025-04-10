@@ -14,7 +14,7 @@ androidx-test-junit = "1.2.1"
 compose-multiplatform = "1.7.3"
 junit = "4.13.2"
 kotlin = "2.1.10"
-koin = "3.5.3"
+koin = "4.0.0"
 ktor = "3.1.1"
 coil = "3.1.0"
 
@@ -35,11 +35,13 @@ androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle
 coil-compose = {module ="io.coil-kt.coil3:coil-compose",version.ref="coil"}
 coil-network-okhttp = {module="io.coil-kt.coil3:coil-network-okhttp", version.ref="coil"}
 
-koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin"}
-koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin"}
-koin-android = {module = "io.insert-koin:koin-android", version.ref = "koin"}
-koin-compose = {module = "io.insert-koin:koin-androidx-compose", version.ref = "koin"}
-koin-viewmodel = {module = "io.insert-koin:koin-androidx-viewmodel", version.ref = "koin"}
+
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+
 
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }

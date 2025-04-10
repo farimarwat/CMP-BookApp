@@ -31,9 +31,10 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
+
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -42,7 +43,8 @@ kotlin {
 
             //koin
             api(libs.koin.core)
-            api(libs.koin.test)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
 
             //ktor
             implementation(libs.ktor.client.core)
@@ -55,6 +57,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.koin.android)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

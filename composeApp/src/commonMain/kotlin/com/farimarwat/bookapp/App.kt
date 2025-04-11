@@ -4,11 +4,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -25,46 +30,59 @@ import kotlinx.coroutines.launch
 
 import org.koin.compose.koinInject
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 fun App(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
     MaterialTheme(
         colorScheme = getColorScheme()
     ) {
-        var showContent by remember { mutableStateOf(false) }
         val navController = rememberNavController()
         val scope = rememberCoroutineScope()
-
-        Column(
-            Modifier
+        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+            rememberTopAppBarState()
+        )
+        Scaffold(
+            modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(top = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            SearchBar(
-                onSearch = {
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
+            topBar = {
+                SearchBar(
+                    scrollBehavior = scrollBehavior,
+                    onSearch = {
 
-                },
-                onFilter = {
-                    scope.launch {
-                        viewModel.filter(it)
+                    },
+                    onFilter = {
+                        scope.launch {
+                            viewModel.filter(it)
+                        }
+                    },
+                    onClear = {
+                        viewModel.filter("")
                     }
-                },
-                onClear = {
-                    viewModel.filter("")
-                }
-            )
-            NavHost(
-                navController = navController,
-                startDestination = Screen.HomeScreen.route
-            ){
-                composable(
-                    route = Screen.HomeScreen.route
+                )
+            }
+        ) { padding ->
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(padding),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+
+                NavHost(
+                    navController = navController,
+                    startDestination = Screen.HomeScreen.route
                 ){
-                    HomeScreen(viewModel)
+                    composable(
+                        route = Screen.HomeScreen.route
+                    ){
+                        HomeScreen(viewModel)
+                    }
                 }
             }
         }
+
     }
 }

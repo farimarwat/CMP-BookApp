@@ -5,7 +5,7 @@ import com.farimarwat.bookapp.data.repository.BookRepositoryImpl
 import com.farimarwat.bookapp.domain.repository.BookRepository
 import com.farimarwat.bookapp.domain.usecase.GetBooksUseCase
 import com.farimarwat.bookapp.domain.usecase.SearchBookUseCase
-import com.farimarwat.bookapp.presentation.BookViewModel
+import com.farimarwat.bookapp.presentation.viewmodel.BookViewModel
 import io.ktor.client.HttpClient
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf

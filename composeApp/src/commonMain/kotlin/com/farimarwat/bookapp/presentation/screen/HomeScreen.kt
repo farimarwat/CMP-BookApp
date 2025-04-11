@@ -21,23 +21,27 @@ fun HomeScreen(list:List<Book>){
         targetState = list.size > 0
     ){
         if(it){
-            LazyColumn {
-                items(
-                    items = list,
-                    key = {
-                        it.key
-                    }
-                ){item ->
-                    Box(
-                        modifier = Modifier
-                            .animateItem(
-                                placementSpec = tween(500)
-                            )
-                    ){
-                        BookItem(book = item)
-                    }
-                }
-            }
+           Box(
+               modifier = Modifier
+           ){
+               LazyColumn {
+                   items(
+                       items = list,
+                       key = {
+                           it.key
+                       }
+                   ){item ->
+                       Box(
+                           modifier = Modifier
+                               .animateItem(
+                                   placementSpec = tween(500)
+                               )
+                       ){
+                           BookItem(book = item)
+                       }
+                   }
+               }
+           }
         }
     }
 }

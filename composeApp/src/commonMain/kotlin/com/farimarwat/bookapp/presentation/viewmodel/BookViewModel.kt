@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.farimarwat.bookapp.domain.model.Book
 import com.farimarwat.bookapp.domain.usecase.GetBooksUseCase
 import com.farimarwat.bookapp.domain.usecase.SearchBookUseCase
+import com.farimarwat.bookapp.presentation.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,9 +22,14 @@ class BookViewModel(
 
     private var _search:MutableStateFlow<List<Book>> = MutableStateFlow(emptyList())
     val search = _search.asStateFlow()
+
+    private var _uiState = MutableStateFlow<UiState<List<Book>>>(UiState.Empty)
+    val uiState = _uiState.asStateFlow()
     suspend fun getBooks(){
+        _uiState.value = UiState.Loading
         originalList = getBooksUseCase()
         _books.value = originalList.toList()
+        _uiState.value = UiState.Success(_books.value)
     }
 
     suspend fun searchBook(query:String){

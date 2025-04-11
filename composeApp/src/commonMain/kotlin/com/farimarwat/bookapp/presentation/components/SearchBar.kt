@@ -29,7 +29,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Preview
 fun SearchBar(
     onSearch:(String)->Unit={},
-    onFilter:(String)->Unit={}
+    onFilter:(String)->Unit={},
+    onClear:()->Unit={}
 ) {
     Box(
         modifier = Modifier
@@ -65,7 +66,7 @@ fun SearchBar(
             trailingIcon = {
                 if(searchText.length>0){
                     IconButton(onClick = {
-
+                        onClear()
                     }){
                         Icon(
                             imageVector = Icons.Default.Clear,

@@ -1,10 +1,13 @@
 package com.farimarwat.bookapp
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -17,6 +20,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import com.farimarwat.bookapp.presentation.viewmodel.BookViewModel
 import com.farimarwat.bookapp.presentation.components.SearchBar
 import com.farimarwat.bookapp.presentation.screen.HomeScreen
+import com.farimarwat.bookapp.presentation.state.UiState
 import com.farimarwat.bookapp.presentation.ui.getColorScheme
 import kotlinx.coroutines.launch
 
@@ -31,6 +35,7 @@ fun App(viewModel: BookViewModel = koinInject<BookViewModel>()) {
         var showContent by remember { mutableStateOf(false) }
         val scope = rememberCoroutineScope()
         val books by viewModel.books.collectAsStateWithLifecycle()
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         LaunchedEffect(Unit){
             viewModel.getBooks()
         }
@@ -39,7 +44,7 @@ fun App(viewModel: BookViewModel = koinInject<BookViewModel>()) {
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(top = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SearchBar(
                 onSearch = {
@@ -49,9 +54,28 @@ fun App(viewModel: BookViewModel = koinInject<BookViewModel>()) {
                     scope.launch {
                         viewModel.filter(it)
                     }
+                },
+                onClear = {
+                    viewModel.filter("")
                 }
             )
-            HomeScreen(books)
+            when(uiState){
+                UiState.Empty -> {}
+                is UiState.Error -> {}
+                UiState.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ){
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.surface
+                        )
+                    }
+                }
+                is UiState.Success<*> -> {
+                    HomeScreen(books)
+                }
+            }
         }
     }
 }

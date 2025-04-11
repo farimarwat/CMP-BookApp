@@ -66,6 +66,7 @@ fun SearchBar(
             trailingIcon = {
                 if(searchText.length>0){
                     IconButton(onClick = {
+                        searchText = ""
                         onClear()
                     }){
                         Icon(

@@ -54,6 +54,8 @@ kotlin {
 
             //coil
             implementation(libs.bundles.coil)
+
+            implementation(libs.navigation.compose)
         }
         androidMain.dependencies {
             implementation(compose.preview)

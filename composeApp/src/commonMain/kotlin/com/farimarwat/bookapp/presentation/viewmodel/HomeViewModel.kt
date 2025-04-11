@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class BookViewModel(
+class HomeViewModel(
     private val getBooksUseCase: GetBooksUseCase,
     private val searchBookUseCase: SearchBookUseCase
 ):ViewModel() {

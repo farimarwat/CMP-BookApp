@@ -12,4 +12,8 @@ class BookRepositoryImpl(private val api:BookApi): BookRepository {
     override suspend fun searchBook(query: String, limit: Int): List<Book> {
         return api.searchBook(query,limit)
     }
+
+    override suspend fun getDetails(key: String): String {
+       return api.getDetails(key)
+    }
 }

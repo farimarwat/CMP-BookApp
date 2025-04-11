@@ -26,7 +26,10 @@ import com.farimarwat.bookapp.presentation.viewmodel.HomeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel){
+fun HomeScreen(
+    viewModel: HomeViewModel,
+    onBookSelected:(Book)->Unit ={}
+    ){
     val books by viewModel.books.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -65,7 +68,9 @@ fun HomeScreen(viewModel: HomeViewModel){
                                     placementSpec = tween(500)
                                 )
                         ){
-                            BookItem(book = item)
+                            BookItem(book = item){
+                                onBookSelected(item)
+                            }
                         }
                     }
                 }

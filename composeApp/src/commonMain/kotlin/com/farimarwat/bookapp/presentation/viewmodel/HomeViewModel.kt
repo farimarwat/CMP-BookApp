@@ -26,6 +26,7 @@ class HomeViewModel(
     private var _uiState = MutableStateFlow<UiState<List<Book>>>(UiState.Empty)
     val uiState = _uiState.asStateFlow()
     suspend fun getBooks(){
+        if(originalList.isNotEmpty()) return
         _uiState.value = UiState.Loading
         originalList = getBooksUseCase()
         _books.value = originalList.toList()

@@ -1,5 +1,6 @@
 package com.farimarwat.bookapp
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,26 +15,30 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import com.farimarwat.bookapp.presentation.viewmodel.HomeViewModel
 import com.farimarwat.bookapp.presentation.components.SearchBar
+import com.farimarwat.bookapp.presentation.screen.DetailsScreen
 import com.farimarwat.bookapp.presentation.screen.HomeScreen
 import com.farimarwat.bookapp.presentation.screen.Screen
 import com.farimarwat.bookapp.presentation.ui.getColorScheme
+import com.farimarwat.bookapp.presentation.viewmodel.DetailsViewModel
 import kotlinx.coroutines.launch
 
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
-fun App(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
+fun App(
+    homeViewModel: HomeViewModel = koinViewModel(),
+    detailsViewModel:DetailsViewModel = koinViewModel()
+) {
     MaterialTheme(
         colorScheme = getColorScheme()
     ) {
@@ -42,25 +47,30 @@ fun App(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
             rememberTopAppBarState()
         )
+        var showSearchBar by remember { mutableStateOf(true) }
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
-                SearchBar(
-                    scrollBehavior = scrollBehavior,
-                    onSearch = {
+                AnimatedVisibility(
+                    visible = showSearchBar
+                ){
+                    SearchBar(
+                        scrollBehavior = scrollBehavior,
+                        onSearch = {
 
-                    },
-                    onFilter = {
-                        scope.launch {
-                            viewModel.filter(it)
+                        },
+                        onFilter = {
+                            scope.launch {
+                                homeViewModel.filter(it)
+                            }
+                        },
+                        onClear = {
+                            homeViewModel.filter("")
                         }
-                    },
-                    onClear = {
-                        viewModel.filter("")
-                    }
-                )
+                    )
+                }
             }
         ) { padding ->
             Column(
@@ -78,7 +88,19 @@ fun App(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                     composable(
                         route = Screen.HomeScreen.route
                     ){
-                        HomeScreen(viewModel)
+                        HomeScreen(homeViewModel){
+                            detailsViewModel.setCurrentBook(it)
+                            navController.navigate(Screen.Details.route)
+                            showSearchBar = false
+                        }
+                    }
+                    composable(
+                        route = Screen.Details.route
+                    ){
+                        DetailsScreen(detailsViewModel){
+                            showSearchBar = true
+                            navController.navigateUp()
+                        }
                     }
                 }
             }

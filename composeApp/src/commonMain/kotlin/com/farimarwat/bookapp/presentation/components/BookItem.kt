@@ -37,7 +37,8 @@ import kotlin.math.roundToInt
 @Composable
 fun BookItem(
     book: Book,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClicked:(Book)->Unit = {}
 ) {
     Card(
         modifier = modifier
@@ -119,7 +120,7 @@ fun BookItem(
             }
 
             IconButton(onClick = {
-
+                onClicked(book)
             }){
                 Icon(
                     imageVector = Icons.Default.ArrowForward,

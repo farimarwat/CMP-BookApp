@@ -9,7 +9,7 @@ data class Book(
     val coverId: Int?,
     var ratingAverage:Double = 0.0,
     var ratingCount:Int = 0,
-    val description:String = "",
+    var description:String = "",
     val languages:List<String> = emptyList(),
 ) {
     fun getCoverImageUrl(): String? {

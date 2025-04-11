@@ -18,14 +18,16 @@ data class Work(
     val printdisabled: Boolean,
     val public_scan: Boolean,
     val subject: List<String>,
-    val title: String
+    val title: String,
+    val description: Description? = null
 ){
     fun toBook():Book{
         return Book(
             key = this.key,
             title = this.title,
             authors = this.authors.map { it.name },
-            coverId = this.cover_id
+            coverId = this.cover_id,
+            description = this.description?.value ?: ""
         )
     }
 }

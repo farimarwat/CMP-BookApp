@@ -18,6 +18,9 @@ class BookViewModel(
     val search = _search.asStateFlow()
     suspend fun getBooks(){
         _books.value = getBooksUseCase()
+        _books.value.forEach { item ->
+            println(item.title)
+        }
     }
 
     suspend fun searchBook(query:String){

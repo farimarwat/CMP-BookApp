@@ -51,6 +51,9 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.logging)
+
+            //coil
+            implementation(libs.bundles.coil)
         }
         androidMain.dependencies {
             implementation(compose.preview)
